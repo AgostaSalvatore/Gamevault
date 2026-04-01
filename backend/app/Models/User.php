@@ -13,6 +13,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
+// Attributes keep mass-assignment and exposure rules in one place so HTTP and factories stay in sync
 #[Fillable(['name', 'email', 'password'])]
 #[Hidden(['password', 'remember_token'])]
 class User extends Authenticatable
@@ -29,12 +30,13 @@ class User extends Authenticatable
     {
         return [
             'email_verified_at' => 'datetime',
-            'password'          => 'hashed',
+            'password'          => 'hashed',  // Delegates hashing to Laravel so we never store raw passwords by mistake
         ];
     }
 
     public function games()
     {
+        // Shared pivot mirrors Game::users so either side can update library state without custom SQL
         return $this
             ->belongsToMany(Game::class)
             ->withPivot('status')
@@ -43,6 +45,7 @@ class User extends Authenticatable
 
     public function reviews()
     {
+        // Owning reviews lets us cascade or aggregate per user without extra joins
         return $this->hasMany(Review::class);
     }
 }

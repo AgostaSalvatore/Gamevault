@@ -15,6 +15,7 @@ class Game extends Model
 
     public function users()
     {
+        // Pivot retains player-specific metadata so a game record stays reusable across accounts
         return $this
             ->belongsToMany(User::class)
             ->withPivot('status')
@@ -23,6 +24,7 @@ class Game extends Model
 
     public function reviews()
     {
+        // Exposes reviews as a collection so UX layers can aggregate sentiment without extra queries
         return $this->hasMany(Review::class);
     }
 }
