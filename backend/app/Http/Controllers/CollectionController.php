@@ -48,20 +48,26 @@ class CollectionController extends Controller
 
     public function index(Request $request)
     {
+        // Hug the relationship so we reuse the pivot metadata already populated by Eloquent
         $games = $request->user()->games()->withPivot('status')->get();
+
+        // Return raw collection; frontends can decide how to present statuses without extra transforms
         return response()->json($games);
     }
 
     public function update(Request $request, $gameId)
     {
+        // Enforce status whitelist so user-provided states never drift from domain vocabulary
         $request->validate([
             'status' => 'required|in:playing,completed,abandoned,wishlist',
         ]);
 
+        // Only touch the pivot row to avoid unintended writes to the shared game model
         $request->user()->games()->updateExistingPivot($gameId, [
             'status' => $request->status,
         ]);
 
+        // Confirmation message keeps API feedback consistent with other endpoints
         return response()->json([
             'message' => 'Game status updated',
         ], 200);
@@ -69,6 +75,7 @@ class CollectionController extends Controller
 
     public function destroy(Request $request, $gameId)
     {
+        // Detaching respects the many-to-many without deleting the base game record used by other users
         $request->user()->games()->detach($gameId);
 
         return response()->json([
