@@ -45,4 +45,17 @@ class ReviewController extends Controller
 
         return response()->json($reviews, 200);
     }
+
+    public function destroy(Request $request, $gameId, $reviewId)
+    {
+        $game = Game::findOrFail($gameId);
+
+        $review = $game->reviews()->findOrFail($reviewId);
+
+        $review->delete();
+
+        return response()->json([
+            'message' => 'Review deleted successfully',
+        ], 200);
+    }
 }
