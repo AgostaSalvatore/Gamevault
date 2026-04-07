@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CollectionController;
 use App\Http\Controllers\GameController;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ReviewController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -28,4 +29,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/games/{gameId}/reviews', [ReviewController::class, 'index']);
     Route::post('/games/{gameId}/reviews', [ReviewController::class, 'store']);
     Route::delete('/games/{gameId}/reviews/{reviewId}', [ReviewController::class, 'destroy']);
+
+    // Profile routes
+    Route::get('/profile/{userId}', [ProfileController::class, 'show']);
 });
