@@ -27,23 +27,25 @@ function Login() {
     }
 
     return (
-        <div>
-            <h1>Login</h1>
+        <div style={{ padding: '20px' }}>
+            <h1 style={{ color: 'white' }}>Login</h1>
             <form onSubmit={handleSubmit}>
                 <input
                     type="email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder="Email"
+                    style={{ display: 'block', margin: '10px 0', padding: '8px', color: 'black' }}
                 />
                 <input
                     type="password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     placeholder="Password"
+                    style={{ display: 'block', margin: '10px 0', padding: '8px', color: 'black' }}
                 />
-                {error && <p>{error}</p>}
-                <button type="submit">Accedi</button>
+                {error && <p style={{ color: 'red' }}>{error}</p>}
+                <button type="submit" style={{ padding: '8px 16px', marginTop: '10px' }}>Accedi</button>
             </form>
         </div>
     )
