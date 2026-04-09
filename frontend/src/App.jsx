@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 // Pages
+import Home from './pages/Home'
 import Login from './pages/Login'
 import Register from './pages/Register'
 // Contexts
@@ -13,7 +14,7 @@ function App() {
       <AuthProvider>
         <div className="bg-gray-900 min-h-screen">
           <Routes>
-            <Route path="/" element={<h1 className="text-white">Home</h1>} />
+            <Route path="/" element={<Home />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
             <Route path="/collection" element={
