@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
+import { useAuth } from '../context/AuthContext'
 
 function Login() {
     // Local state keeps auth form responsive without waiting for global context wiring
@@ -8,6 +9,7 @@ function Login() {
     const [password, setPassword] = useState('')
     const [error, setError] = useState('')
     const navigate = useNavigate()
+    const { login } = useAuth()
 
     const handleSubmit = async (e) => {
         e.preventDefault()
@@ -17,8 +19,8 @@ function Login() {
                 email,
                 password,
             })
-            // Persist token client-side to allow subsequent requests to reuse it until we wire a dedicated auth store
-            localStorage.setItem('token', response.data.token)
+            // Delegate persistence to the auth context so every consumer stays in sync on login
+            login(response.data.user, response.data.token)
             navigate('/')
         } catch (err) {
             // Collapse any server-side error into a friendly label to avoid leaking implementation details
