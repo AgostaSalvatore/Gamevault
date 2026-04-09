@@ -1,6 +1,10 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
+// Pages
 import Login from './pages/Login'
+import Register from './pages/Register'
+// Contexts
 import { AuthProvider } from './context/AuthContext'
+// Components
 import ProtectedRoute from './components/ProtectedRoute'
 
 function App() {
@@ -10,8 +14,8 @@ function App() {
         <div className="bg-gray-900 min-h-screen">
           <Routes>
             <Route path="/" element={<h1 className="text-white">Home</h1>} />
-            <Route path="/login" element={<h1 className="text-white">Login</h1>} />
-            <Route path="/register" element={<h1 className="text-white">Register</h1>} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
             <Route path="/collection" element={
               <ProtectedRoute>
                 <h1 className="text-white">Collection</h1>
