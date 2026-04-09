@@ -9,12 +9,14 @@ import Profile from './pages/Profile'
 import { AuthProvider } from './context/AuthContext'
 // Components
 import ProtectedRoute from './components/ProtectedRoute'
+import Navbar from './components/Navbar'
 
 function App() {
   return (
     <BrowserRouter>
       <AuthProvider>
         <div className="bg-gray-900 min-h-screen">
+          <Navbar />
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/login" element={<Login />} />

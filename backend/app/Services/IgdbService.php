@@ -38,7 +38,7 @@ class IgdbService
                 'id'                 => Arr::get($game, 'id'),
                 'name'               => Arr::get($game, 'name'),
                 'summary'            => Arr::get($game, 'summary'),
-                'cover_image_url'    => Arr::get($game, 'cover.url'),
+                'cover_image_url'    => str_replace('t_thumb', 't_cover_big', Arr::get($game, 'cover.url', '')),
                 'first_release_date' => Arr::get($game, 'first_release_date'),
                 'rating'             => Arr::get($game, 'rating'),
             ];
