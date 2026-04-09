@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { Link } from 'react-router-dom'
 import api from '../services/api'
 
 function Home() {
@@ -70,13 +71,18 @@ function Home() {
                 <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
                     {games.map((game) => {
                         const coverImage = game.cover_image ?? game.cover_image_url ?? null
+                        const detailPath = `/games/${game.slug}`
 
                         return (
                             <div
                                 key={game.id}
-                                className="group flex flex-col rounded-2xl border border-purple-500/10 bg-gray-900/70 p-4 shadow-[0_30px_60px_-40px_rgba(168,85,247,0.4)] transition hover:-translate-y-1 hover:border-purple-400/40 hover:shadow-purple-500/40"
+                                className="group flex h-full flex-col rounded-2xl border border-purple-500/10 bg-gray-900/70 p-4 shadow-[0_30px_60px_-40px_rgba(168,85,247,0.4)] transition hover:-translate-y-1 hover:border-purple-400/40 hover:shadow-purple-500/40"
                             >
-                                <div className="relative overflow-hidden rounded-xl">
+                                <Link
+                                    to={detailPath}
+                                    state={{ game }}
+                                    className="relative block overflow-hidden rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500/60"
+                                >
                                     {coverImage ? (
                                         <img
                                             src={coverImage}
@@ -89,10 +95,17 @@ function Home() {
                                         </div>
                                     )}
                                     <div className="absolute inset-0 bg-linear-to-t from-black/70 via-black/10 to-transparent opacity-0 transition group-hover:opacity-100" />
-                                </div>
-                                <h2 className="mt-4 text-lg font-semibold text-gray-100 transition group-hover:text-purple-200">
+                                </Link>
+                                <h2 className="mt-4 line-clamp-2 min-h-[3.5rem] text-lg font-semibold text-gray-100 transition group-hover:text-purple-200">
                                     {game.name}
                                 </h2>
+                                <Link
+                                    to={detailPath}
+                                    state={{ game }}
+                                    className="mt-auto inline-flex items-center justify-center rounded-xl bg-linear-to-r from-purple-600 to-fuchsia-600 px-4 py-2 text-sm font-semibold text-white shadow-lg transition hover:from-purple-500 hover:to-fuchsia-500 hover:-translate-y-0.5 hover:shadow-purple-500/40 focus:outline-none focus:ring-2 focus:ring-purple-500/60 focus:ring-offset-2 focus:ring-offset-gray-900"
+                                >
+                                    Dettagli
+                                </Link>
                             </div>
                         )
                     })}

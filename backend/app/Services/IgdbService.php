@@ -17,7 +17,7 @@ class IgdbService
         $accessToken = $this->getAccessToken();
 
         $body = sprintf(
-            'fields id, name, summary, cover.url, slug, first_release_date, rating; search "%s";',
+            'fields id, name, summary, cover.url, slug, first_release_date, rating, platforms.name, platforms.platform_logo.url, genres.name; search "%s";',
             addslashes($query)
         );
 
@@ -34,6 +34,24 @@ class IgdbService
 
         // Normalize nested IGDB data into flat arrays that match our domain expectations
         return array_map(static function (array $game): array {
+            $platforms = array_map(static function (array $platform): array {
+                $logo = Arr::get($platform, 'platform_logo.url');
+
+                if (!empty($logo)) {
+                    $logo = str_replace('t_thumb', 't_logo_med', $logo);
+                }
+
+                return [
+                    'id'       => Arr::get($platform, 'id'),
+                    'name'     => Arr::get($platform, 'name'),
+                    'logo_url' => $logo ?: null,
+                ];
+            }, Arr::get($game, 'platforms', []) ?? []);
+
+            $genres = array_values(array_filter(array_map(static function ($genre) {
+                return Arr::get((array) $genre, 'name');
+            }, Arr::get($game, 'genres', []) ?? [])));
+
             return [
                 'id'                 => Arr::get($game, 'id'),
                 'name'               => Arr::get($game, 'name'),
@@ -42,6 +60,8 @@ class IgdbService
                 'first_release_date' => Arr::get($game, 'first_release_date'),
                 'rating'             => Arr::get($game, 'rating'),
                 'slug'               => Arr::get($game, 'slug'),
+                'platforms'          => $platforms,
+                'genres'             => $genres,
             ];
         }, $response->json() ?? []);
     }

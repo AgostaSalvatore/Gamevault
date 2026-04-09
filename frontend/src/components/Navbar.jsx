@@ -23,6 +23,12 @@ function Navbar() {
                 {token ? (
                     <div className="flex items-center gap-4">
                         <Link
+                            to="/collection"
+                            className="rounded-md px-3 py-1.5 text-sm font-medium text-gray-200 transition-colors hover:text-purple-200"
+                        >
+                            Collezione
+                        </Link>
+                        <Link
                             to={`/profile/${user?.id}`}
                             className="rounded-md px-3 py-1.5 text-sm font-medium text-gray-200 transition-colors hover:text-purple-200"
                         >

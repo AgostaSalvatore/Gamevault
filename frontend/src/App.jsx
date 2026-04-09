@@ -5,6 +5,8 @@ import Login from './pages/Login'
 import Register from './pages/Register'
 import Collection from './pages/Collection'
 import Profile from './pages/Profile'
+import GameShow from './pages/GameShow'
+
 // Contexts
 import { AuthProvider } from './context/AuthContext'
 // Components
@@ -21,6 +23,7 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
+            <Route path="/games/:slug" element={<GameShow />} />
             <Route path="/collection" element={
               <ProtectedRoute>
                 <Collection />
