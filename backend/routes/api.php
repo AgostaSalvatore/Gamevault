@@ -14,6 +14,7 @@ Route::post('/login', [AuthController::class, 'login']);
 
 // Game search route
 Route::get('/games/search', [GameController::class, 'search']);
+Route::get('/games/{slug}', [GameController::class, 'show']);
 
 // Protected routes
 Route::middleware('auth:sanctum')->group(function () {

@@ -19,4 +19,15 @@ class GameController extends Controller
 
         return response()->json($games);
     }
+
+    public function show(string $slug, IgdbService $igdbService)
+    {
+        $game = $igdbService->getGameBySlug($slug);
+
+        if ($game === null) {
+            return response()->json(['message' => 'Game not found'], 404);
+        }
+
+        return response()->json($game);
+    }
 }
