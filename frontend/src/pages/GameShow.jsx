@@ -40,11 +40,11 @@ function GameShow({ game: propGame }) {
 
         try {
             await api.post('/collection', {
-                rawg_id: game.id,
+                rawg_id: game.rawg_id ?? game.id,
                 name: game.name,
                 slug: game.slug ?? slug,
                 cover_image: normalizeCoverUrl(game.cover_image ?? game.cover_image_url),
-                released: toIsoDate(game.first_release_date),
+                released: game.released ?? toIsoDate(game.first_release_date),
                 status: statusOverride ?? status,
             })
 
@@ -65,21 +65,24 @@ function GameShow({ game: propGame }) {
     }
 
     const releaseDate = useMemo(() => {
-        if (!game?.first_release_date) {
-            return 'Data non disponibile'
+        const formatOptions = { day: '2-digit', month: 'long', year: 'numeric' }
+
+        if (game?.first_release_date) {
+            const ms = Number(game.first_release_date) * 1000
+            if (!Number.isNaN(ms)) {
+                return new Date(ms).toLocaleDateString('it-IT', formatOptions)
+            }
         }
 
-        const milliseconds = Number(game.first_release_date) * 1000
-        if (Number.isNaN(milliseconds)) {
-            return 'Data non disponibile'
+        if (game?.released) {
+            const parsed = new Date(game.released)
+            if (!Number.isNaN(parsed.getTime())) {
+                return parsed.toLocaleDateString('it-IT', formatOptions)
+            }
         }
 
-        return new Date(milliseconds).toLocaleDateString('it-IT', {
-            day: '2-digit',
-            month: 'long',
-            year: 'numeric',
-        })
-    }, [game?.first_release_date])
+        return 'Data non disponibile'
+    }, [game?.first_release_date, game?.released])
 
     if (!game) {
         return (
@@ -200,7 +203,7 @@ function GameShow({ game: propGame }) {
                                     >
                                         {STATUS_OPTIONS.map((option) => (
                                             <option key={option} value={option}>
-                                                {option}
+                                                {option.charAt(0).toUpperCase() + option.slice(1)}
                                             </option>
                                         ))}
                                     </select>
