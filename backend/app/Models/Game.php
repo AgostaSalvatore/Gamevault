@@ -9,6 +9,7 @@ class Game extends Model
     protected $fillable = [
         'rawg_id',
         'name',
+        'slug',
         'cover_image',
         'released',
     ];

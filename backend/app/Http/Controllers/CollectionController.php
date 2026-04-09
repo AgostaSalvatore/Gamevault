@@ -13,6 +13,7 @@ class CollectionController extends Controller
         $request->validate([
             'rawg_id'     => 'required|integer',
             'name'        => 'required|string|max:255',
+            'slug'        => 'nullable|string',
             'cover_image' => 'nullable|string|url',
             'released'    => 'nullable|date',
             'status'      => 'required|in:playing,completed,abandoned,wishlist',
@@ -23,6 +24,7 @@ class CollectionController extends Controller
             ['rawg_id' => $request->rawg_id],
             [
                 'name'        => $request->name,
+                'slug'        => $request->slug,
                 'cover_image' => $request->cover_image,
                 'released'    => $request->released,
             ]

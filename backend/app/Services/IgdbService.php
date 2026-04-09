@@ -17,7 +17,7 @@ class IgdbService
         $accessToken = $this->getAccessToken();
 
         $body = sprintf(
-            'fields id, name, summary, cover.url, first_release_date, rating; search "%s";',
+            'fields id, name, summary, cover.url, slug, first_release_date, rating; search "%s";',
             addslashes($query)
         );
 
@@ -41,6 +41,7 @@ class IgdbService
                 'cover_image_url'    => str_replace('t_thumb', 't_cover_big', Arr::get($game, 'cover.url', '')),
                 'first_release_date' => Arr::get($game, 'first_release_date'),
                 'rating'             => Arr::get($game, 'rating'),
+                'slug'               => Arr::get($game, 'slug'),
             ];
         }, $response->json() ?? []);
     }
